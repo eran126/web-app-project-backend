@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import authRoute from "./routes/auth_route";
+import fileRoute from "./routes/file_route";
 
 var cors = require("cors");
 
@@ -21,7 +22,9 @@ const initApp = (): Promise<Express> => {
       app.use(bodyParser.urlencoded({ extended: true }));
 
       app.use(cookieParser());
+      app.use("/public", express.static("public"));
       app.use("/auth", authRoute);
+      app.use("/file", fileRoute);
 
       resolve(app);
     });
