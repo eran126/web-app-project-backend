@@ -1,4 +1,4 @@
-import Comment, { IComment } from "../models/commen";
+import Comment, { IComment } from "../models/comment_model";
 import Post from "../models/post_model";
 import { BaseController } from "./base_controller";
 import { Response } from "express";

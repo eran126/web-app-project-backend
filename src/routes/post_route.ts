@@ -42,9 +42,9 @@ import authMiddleware from "../common/auth_middleware";
  *            type: number 
  *            description: The post likes count
  *        example:
+ *          title: 'Post title'
  *          body: 'This is my post'
- *          author: 'Eran'
- *          postId: '12345678'
+ *          author: 'EranShir'
  *          timestamp: '2025-01-02T00:00:00.000Z'
  */
 
