@@ -12,9 +12,10 @@ class CommentController extends BaseController<IComment> {
   async post(req: AuthRequest, res: Response) {
     try {
       const userId = req.user._id;
-      const { body, postId } = req.body;
+      const { body, postId, timestamp } = req.body;
 
       const post = await Post.findById(postId);
+
       if (!post) {
         res.status(404).json({ message: "Post not found" });
         return;
@@ -24,6 +25,7 @@ class CommentController extends BaseController<IComment> {
         body,
         author: userId,
         postId: post.id,
+        timestamp: timestamp
       });
 
       post.comments.push(comment.id);

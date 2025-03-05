@@ -33,7 +33,7 @@ import authMiddleware from "../common/auth_middleware";
  *          description: 'This is a great post'
  *          author: 'Shir'
  *          postId: '123123'
- *          timeStamp: '2025-01-02T00:00:00.000Z'
+ *          timestamp: '2025-01-02T00:00:00.000Z'
  */
 
 /**

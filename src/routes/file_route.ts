@@ -24,17 +24,20 @@ const upload = multer({ storage: storage });
 
 /**
  * @swagger
- * /:
+ * /file:
  *   post:
  *     summary: Upload a file
  *     tags: [File]
- *     consumes:
- *       - multipart/form-data
- *     parameters:
- *       - in: formData
- *         name: file
- *         type: file
- *         description: The file to upload
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: The file to upload
  *     responses:
  *       200:
  *         description: The file was uploaded successfully 
