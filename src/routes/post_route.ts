@@ -1,0 +1,320 @@
+import express from "express";
+const router = express.Router();
+import PostController from "../controllers/post_controller";
+import authMiddleware from "../common/auth_middleware";
+
+/**
+ * @swagger
+ * tags:
+ *   name: Posts
+ *   description: The Posts API
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *      Post:
+ *        type: object
+ *        properties:
+ *          title:
+ *            type: string
+ *            description: The post title
+ *          body:
+ *            type: string
+ *            description: The post body
+ *          author:
+ *            type: string
+ *            description: The post user Id
+ *          timestamp:
+ *            type: string
+ *            description: The post upload time
+ *          likes:
+ *            type: array
+ *            description: The post likes
+ *          comments:
+ *            type: array
+ *            description: The post comments
+ *          isLiked:
+ *            type: boolean
+ *            description: Is The post liked by the connected user
+ *          likesCount:
+ *            type: number 
+ *            description: The post likes count
+ *        example:
+ *          body: 'This is my post'
+ *          author: 'Eran'
+ *          postId: '12345678'
+ *          timestamp: '2025-01-02T00:00:00.000Z'
+ */
+
+/**
+ * @swagger
+ * /posts:
+ *   get:
+ *     summary: Get all posts
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *       401:
+ *         description: Unauthorized, user needs to be signed in
+ *       500:
+ *         description: Unexpected error
+ */
+
+router.get("/", authMiddleware, PostController.get.bind(PostController));
+
+/**
+ * @swagger
+ * /posts/connectedUser:
+ *   get:
+ *     summary: Get posts by the connected user
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of posts by the connected user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *       401:
+ *         description: Unauthorized, user needs to be signed in
+ *       500:
+ *         description: Unexpected error
+ */
+
+router.get(
+  "/connectedUser",
+  authMiddleware,
+  PostController.getByConnectedUser.bind(PostController)
+);
+
+/**
+ * @swagger
+ * /post/id/{id}:
+ *   get:
+ *     summary: Get a post by ID
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the post to retrieve
+ *     responses:
+ *       200:
+ *         description: Post data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       401:
+ *         description: Unauthorized, user needs to be signed in
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Unexpected error
+ */
+
+router.get(
+  "/id/:id",
+  authMiddleware,
+  PostController.getById.bind(PostController)
+);
+
+/**
+ * @swagger
+ * /posts/like/{id}:
+ *   get:
+ *     summary: Like a post by ID
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the post to like
+ *     responses:
+ *       200:
+ *         description: Post liked successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       401:
+ *         description: Unauthorized, user needs to be signed in
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Unexpected error
+ */
+
+router.get(
+  "/like/:id",
+  authMiddleware,
+  PostController.like.bind(PostController)
+);
+
+/**
+ * @swagger
+ * /posts/unlike/{id}:
+ *   get:
+ *     summary: Unlike a post by ID
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the post to unlike
+ *     responses:
+ *       200:
+ *         description: Post unliked successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       401:
+ *         description: Unauthorized, user needs to be signed in
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Unexpected error
+ */
+
+router.get(
+  "/unlike/:id",
+  authMiddleware,
+  PostController.unlike.bind(PostController)
+);
+
+/**
+ * @swagger
+ * /posts:
+ *   post:
+ *     summary: Create a new post
+ *     tags: [Post]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *     responses:
+ *       201:
+ *         description: The post was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       400:
+ *         description: Some parameters are missing or invalid
+ *       401:
+ *         description: Unauthorized, user needs to be signed in
+ *       500:
+ *         description: Unexpected error
+ */
+
+router.post("/", authMiddleware, PostController.post.bind(PostController));
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *   put:
+ *     summary: Update a post by ID
+ *     tags: [Post]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the post to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *     responses:
+ *       200:
+ *         description: The post was successfully updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       400:
+ *         description: Some parameters are missing or invalid
+ *       401:
+ *         description: Unauthorized, user needs to be signed in
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Unexpected error
+ */
+
+router.put(
+  "/:id",
+  authMiddleware,
+  PostController.putById.bind(PostController)
+);
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *   delete:
+ *     summary: Delete a post by ID
+ *     tags: [Post]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the post to delete
+ *     responses:
+ *       200:
+ *         description: The post was successfully deleted
+ *       401:
+ *         description: Unauthorized, user needs to be signed in
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Unexpected error
+ */
+
+router.delete(
+  "/:id",
+  authMiddleware,
+  PostController.deleteById.bind(PostController)
+);
+
+export default router;
