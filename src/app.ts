@@ -7,6 +7,8 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import authRoute from "./routes/auth_route";
 import fileRoute from "./routes/file_route";
+import postRoute from "./routes/post_route";
+import commentRoute from "./routes/comment_route";
 
 var cors = require("cors");
 
@@ -25,6 +27,8 @@ const initApp = (): Promise<Express> => {
       app.use("/public", express.static("public"));
       app.use("/auth", authRoute);
       app.use("/file", fileRoute);
+      app.use("/posts", postRoute);
+      app.use("/comments", commentRoute);
 
       resolve(app);
     });
