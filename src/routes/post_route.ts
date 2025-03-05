@@ -44,7 +44,6 @@ import authMiddleware from "../common/auth_middleware";
  *        example:
  *          title: 'Post title'
  *          body: 'This is my post'
- *          author: 'EranShir'
  *          timestamp: '2025-01-02T00:00:00.000Z'
  */
 
@@ -104,7 +103,7 @@ router.get(
 
 /**
  * @swagger
- * /post/id/{id}:
+ * /posts/id/{id}:
  *   get:
  *     summary: Get a post by ID
  *     tags: [Posts]

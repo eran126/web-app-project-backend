@@ -38,6 +38,7 @@ class PostController extends BaseController<IPost> {
 
   async getById(req: AuthRequest, res: Response) {
     try {
+      console.log(req.params.id)
       const post = await Post.findById(req.params.id)
         .populate([{ path: "author", select: "fullName imaegUrl" }])
         .populate({
@@ -111,7 +112,7 @@ class PostController extends BaseController<IPost> {
           "comments",
         ])
         .populate([{ path: "author", select: "fullName imageUrl" }])
-        .sort({ timeStamp: -1 });
+        .sort({ timestamp: -1 });
       const detailedPosts = posts
         .map((post) => post.toObject())
         .map(({ _id, likes, ...post }) => ({
