@@ -19,7 +19,7 @@ const register = async (req: Request, res: Response) => {
   try {
     const userWithEmail = await User.findOne({ email: email });
     if (userWithEmail != null) {
-      return res.status(400).send("email already exists");
+      return res.status(400).send("Email already exists");
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -82,18 +82,18 @@ const login = async (req: Request, res: Response) => {
   const password: string = req.body.password;
 
   if (!email || !password) {
-    return res.status(400).send("missing email or password");
+    return res.status(400).send("Email or password is missing");
   }
   
   try {
     const user = await User.findOne({ email: email });
     if (user == null) {
-      return res.status(400).send("email or password incorrect");
+      return res.status(400).send("Incorrect email or password");
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return res.status(400).send("email or password incorrect");
+      return res.status(400).send("Incorrect email or password");
     }
 
     const tokens = await generateTokens(user);
@@ -124,22 +124,11 @@ const logout = async (req: Request, res: Response) => {
 
       try {
         const userDb = await User.findOne({ _id: user._id });
-        // if (
-        //   !userDb.refreshTokens ||
-        //   !userDb.refreshTokens.includes(refreshToken)
-        // ) {
-        //   userDb.refreshTokens = [];
-        //   await userDb.save();
-        //   return res.sendStatus(401);
-        // } else {
-          userDb.refreshTokens = userDb.refreshTokens.filter(
-            (t) => t !== refreshToken
-          );
-          await userDb.save();
-          res.clearCookie("refresh", { path: "/auth" });
-          res.clearCookie("access");
-          return res.sendStatus(200);
-        // }
+        userDb.refreshTokens = userDb.refreshTokens.filter((t) => t !== refreshToken);
+        await userDb.save();
+        res.clearCookie("refresh", { path: "/auth" });
+        res.clearCookie("access");
+        return res.sendStatus(200);
       } catch (err) {
         res.sendStatus(500).send(err.message);
       }
