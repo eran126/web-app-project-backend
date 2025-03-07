@@ -3,6 +3,7 @@ import { Document } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User, { IUser } from "../models/user_model";
+import { OAuth2Client } from "google-auth-library";
 
 const accessTokenExpiration = parseInt(process.env.JWT_EXPIRATION_MS);
 
@@ -54,6 +55,34 @@ const register = async (req: Request, res: Response) => {
     return res.status(500).send("Something went wrong while registring");
   }
 };
+
+const client = new OAuth2Client();
+const googleSignin = async (req: Request, res: Response) => {
+   const credential = req.body.credential;
+   try {
+       const ticket = await client.verifyIdToken({
+           idToken: credential,
+           audience: process.env.GOOGLE_CLIENT_ID,
+       });
+       const payload = ticket.getPayload();
+       console.log(payload);
+
+       const email = payload?.email;
+       let user = await User.findOne({ 'email': email });
+       if (user == null) {
+           user = await User.create(
+               {
+                   'email': email,
+                   'imageUrl': payload?.picture,
+                   'password': 'google-signin'
+               });
+       }
+       const tokens = await generateTokens(user)
+       return res.status(200).send(tokens);
+   } catch (err) {
+       return res.status(400).send("error missing email or password");
+   }
+}
 
 const generateTokens = async (user: Document & IUser) => {
   const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
@@ -190,6 +219,7 @@ const refresh = async (req: Request, res: Response) => {
 
 export default {
   register,
+  googleSignin,
   login,
   logout,
   refresh,

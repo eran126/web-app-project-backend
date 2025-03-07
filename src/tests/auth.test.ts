@@ -92,7 +92,7 @@ describe("Auth tests", () => {
     await new Promise((resolve) => setTimeout(() => resolve("done"), 7000));
 
     const response = await request(app)
-      .get("/reviews/")
+      .get("/posts/")
       .set("Cookie", accessTokenCookie);
     expect(response.statusCode).not.toBe(200);
   });
