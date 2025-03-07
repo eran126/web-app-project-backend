@@ -38,7 +38,6 @@ class PostController extends BaseController<IPost> {
 
   async getById(req: AuthRequest, res: Response) {
     try {
-      console.log(req.params.id)
       const post = await Post.findById(req.params.id)
         .populate([{ path: "author", select: "fullName imaegUrl" }])
         .populate({
@@ -53,7 +52,7 @@ class PostController extends BaseController<IPost> {
 
       res.status(201).send(post);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(404).json({ message: "Post not found" });
     }
   }
 

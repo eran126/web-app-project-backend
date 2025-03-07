@@ -9,6 +9,7 @@ import authRoute from "./routes/auth_route";
 import fileRoute from "./routes/file_route";
 import postRoute from "./routes/post_route";
 import commentRoute from "./routes/comment_route";
+import userRoute from "./routes/user_route";
 
 var cors = require("cors");
 
@@ -29,6 +30,7 @@ const initApp = (): Promise<Express> => {
       app.use("/file", fileRoute);
       app.use("/posts", postRoute);
       app.use("/comments", commentRoute);
+      app.use("/user", userRoute);
 
       resolve(app);
     });
