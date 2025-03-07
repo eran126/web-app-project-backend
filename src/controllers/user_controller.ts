@@ -3,6 +3,13 @@ import { Response } from "express";
 import User, { IUser } from "../models/user_model";
 import { AuthRequest } from "../common/auth_middleware";
 
+/*
+TODO:
+1. Add AI route
+2. Add google sign in
+3. add deployment stuff
+*/
+
 class UserController extends BaseController<IUser> {
   constructor() {
     super(User);
@@ -24,7 +31,6 @@ class UserController extends BaseController<IUser> {
   }
 
   async putById(req: AuthRequest, res: Response) {
-    console.log("Put User", req.body);
     const id = req.user._id;
 
     try {
