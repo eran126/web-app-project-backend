@@ -104,20 +104,31 @@ router.post("/register", authController.register);
  *           schema:
  *             type: object
  *             properties:
- *               token:
+ *               access_token:
  *                 type: string
- *                 description: Google user token.
+ *                 description: Google OAuth access token.
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: User's email from Google.
  *     responses:
  *       200:
  *         description: The user was successfully authenticated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *                   description: JWT access token for the user.
+ *                 refreshToken:
+ *                   type: string
+ *                   description: JWT refresh token for the user.
  *       400:
- *         description: Some parameters are missing or invalid
+ *         description: Missing or invalid parameters
  *       500:
- *         description: Unexpected error
+ *         description: Internal server error
  */
 
 router.post("/google", authController.googleSignin);
