@@ -51,25 +51,38 @@ import authMiddleware from "../common/auth_middleware";
  * @swagger
  * /posts:
  *   get:
- *     summary: Get all posts
+ *     summary: Get posts with pagination (10 posts per page)
  *     tags: [Posts]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Page number to retrieve (default is 1)
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
  *     responses:
  *       200:
- *         description: A list of posts
+ *         description: A list of posts in the specified page
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Post'
+ *               type: object
+ *               properties:
+ *                 currentPage:
+ *                   type: integer
+ *                   description: The current page number
+ *                 posts:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Post'
  *       401:
  *         description: Unauthorized, user needs to be signed in
  *       500:
  *         description: Unexpected error
  */
-
 router.get("/", authMiddleware, PostController.get.bind(PostController));
 
 /**
