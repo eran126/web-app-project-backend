@@ -11,6 +11,10 @@ class PostController extends BaseController<IPost> {
 
   async get(req: AuthRequest, res: Response) {
     try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = 10; // Always return 10 posts per page
+      const skip = (page - 1) * limit;
+
       const posts = await Post.find()
         .select([
           "title",
@@ -20,7 +24,10 @@ class PostController extends BaseController<IPost> {
           "comments",
         ])
         .populate([{ path: "author", select: "fullName imageUrl" }])
-        .sort({ timestamp: -1 });
+        .sort({ timestamp: -1 })
+        .skip(skip)
+        .limit(limit);
+
       const detailedPosts = posts
         .map((post) => post.toObject())
         .map(({ _id, likes, ...post }) => ({
@@ -30,7 +37,9 @@ class PostController extends BaseController<IPost> {
           isLiked: likes.includes(req.user._id),
         }));
 
-      res.send(detailedPosts);
+      res.json({
+        currentPage: page,
+        posts: detailedPosts});
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
