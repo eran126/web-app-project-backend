@@ -4,7 +4,7 @@ import initApp from "../app";
 import mongoose, { ObjectId } from "mongoose";
 import Comment, { IComment } from "../models/comment_model";
 import User, { IUser } from "../models/user_model";
-import Review, { IPost } from "../models/post_model";
+import Post, { IPost } from "../models/post_model";
 
 let app: Express;
 let accessTokenCookie = "";
@@ -46,7 +46,7 @@ beforeAll(async () => {
   post.author = postedUser.id;
   comment.author = postedUser.id;
 
-  const postedPost = await Review.create(post);
+  const postedPost = await Post.create(post);
   post._id = postedPost._id;
   comment.postId = postedPost._id;
 });

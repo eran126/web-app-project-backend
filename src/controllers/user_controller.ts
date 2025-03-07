@@ -3,13 +3,6 @@ import { Response } from "express";
 import User, { IUser } from "../models/user_model";
 import { AuthRequest } from "../common/auth_middleware";
 
-/*
-TODO:
-1. Add AI route
-2. Add google sign in
-3. add deployment stuff
-*/
-
 class UserController extends BaseController<IUser> {
   constructor() {
     super(User);

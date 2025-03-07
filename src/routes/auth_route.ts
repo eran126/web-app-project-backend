@@ -93,6 +93,48 @@ router.post("/register", authController.register);
 
 /**
  * @swagger
+ * /auth/google:
+ *   post:
+ *     summary: Sign in with Google
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               access_token:
+ *                 type: string
+ *                 description: Google OAuth access token.
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: User's email from Google.
+ *     responses:
+ *       200:
+ *         description: The user was successfully authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *                   description: JWT access token for the user.
+ *                 refreshToken:
+ *                   type: string
+ *                   description: JWT refresh token for the user.
+ *       400:
+ *         description: Missing or invalid parameters
+ *       500:
+ *         description: Internal server error
+ */
+
+router.post("/google", authController.googleSignin);
+
+/**
+ * @swagger
  * /auth/login:
  *   post:
  *     summary: Log in a user

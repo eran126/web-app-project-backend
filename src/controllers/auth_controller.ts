@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User, { IUser } from "../models/user_model";
 
+const axios = require('axios');
 const accessTokenExpiration = parseInt(process.env.JWT_EXPIRATION_MS);
 
 const register = async (req: Request, res: Response) => {
@@ -52,6 +53,46 @@ const register = async (req: Request, res: Response) => {
     return res.status(201).json(userWithoutPassword);
   } catch (err) {
     return res.status(500).send("Something went wrong while registring");
+  }
+};
+
+const googleSignin = async (req: Request, res: Response) => {
+  const { access_token, email } = req.body;
+
+  if (!access_token || !email) {
+    return res.status(400).json({ error: "Missing access_token or email" });
+  }
+
+  try {
+    // Verify the access_token by fetching user info from Google
+    const googleResponse = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
+      headers: { Authorization: `Bearer ${access_token}` },
+    });
+
+    const googleUser = googleResponse.data;
+
+    if (googleUser.email !== email) {
+      return res.status(400).json({ error: "Email mismatch" });
+    }
+
+    // Find user in database or create new one
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = await User.create({
+        fullName: googleUser.name,
+        email: googleUser.email,
+        imageUrl: googleUser.picture,
+        password: "google-signin",
+      });
+    }
+
+    // Generate authentication tokens
+    const tokens = await generateTokens(user);
+
+    return res.status(200).json(tokens);
+  } catch (error) {
+    console.error("Google Sign-in Error:", error);
+    return res.status(400).json({ error: "Invalid Google access token" });
   }
 };
 
@@ -190,6 +231,7 @@ const refresh = async (req: Request, res: Response) => {
 
 export default {
   register,
+  googleSignin,
   login,
   logout,
   refresh,
