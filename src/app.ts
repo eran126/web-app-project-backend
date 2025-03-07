@@ -21,10 +21,16 @@ const initApp = (): Promise<Express> => {
     db.on("error", (error) => console.error(error));
     const dbUrl = process.env.DB_URL;
     mongoose.connect(dbUrl!).then(() => {
+        const corsOptions = {
+            origin: `http://${process.env.DOMAIN_BASE}:5173`,
+            credentials: true,
+          };
+
       const app = express();
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
 
+      app.use(cors(corsOptions));
       app.use(cookieParser());
       app.use("/public", express.static("public"));
       app.use("/auth", authRoute);
