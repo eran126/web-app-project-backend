@@ -2,14 +2,14 @@ import mongoose, { ObjectId } from "mongoose";
 
 export interface IComment {
   _id?: ObjectId;
-  body: string;
+  text: string;
   author: ObjectId;
   postId: ObjectId;
   timestamp: Date;
 }
 
 const commentSchema = new mongoose.Schema<IComment>({
-  body: {
+  text: {
     type: String,
     required: true,
   },

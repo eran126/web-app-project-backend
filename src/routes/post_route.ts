@@ -17,12 +17,12 @@ import authMiddleware from "../common/auth_middleware";
  *      Post:
  *        type: object
  *        properties:
- *          title:
+ *          text:
  *            type: string
- *            description: The post title
- *          body:
+ *            description: The post itself
+ *          image:
  *            type: string
- *            description: The post body
+ *            description: The post picture url
  *          author:
  *            type: string
  *            description: The post user Id
@@ -42,9 +42,8 @@ import authMiddleware from "../common/auth_middleware";
  *            type: number 
  *            description: The post likes count
  *        example:
- *          title: 'Post title'
- *          body: 'This is my post'
- *          timestamp: '2025-01-02T00:00:00.000Z'
+ *          text: 'This hamburger is very tasty'
+ *          image: 'http://url.com'
  */
 
 /**
@@ -86,6 +85,42 @@ import authMiddleware from "../common/auth_middleware";
 router.get("/", authMiddleware, PostController.get.bind(PostController));
 
 /**
+  * @swagger
+  * /posts/id/{id}:
+  *   get:
+  *     summary: Get a post by ID
+  *     tags: [Posts]
+  *     security:
+  *       - bearerAuth: []
+  *     parameters:
+  *       - in: path
+  *         name: id
+  *         schema:
+  *           type: string
+  *         required: true
+  *         description: ID of the post to retrieve
+  *     responses:
+  *       200:
+  *         description: Post data
+  *         content:
+  *           application/json:
+  *             schema:
+  *               $ref: '#/components/schemas/Post'
+  *       401:
+  *         description: Unauthorized, user needs to be signed in
+  *       404:
+  *         description: Post not found
+  *       500:
+  *         description: Unexpected error
+  */
+ 
+router.get(
+  "/id/:id",
+  authMiddleware,
+  PostController.getById.bind(PostController)
+);
+
+/**
  * @swagger
  * /posts/connectedUser:
  *   get:
@@ -112,42 +147,6 @@ router.get(
   "/connectedUser",
   authMiddleware,
   PostController.getByConnectedUser.bind(PostController)
-);
-
-/**
- * @swagger
- * /posts/id/{id}:
- *   get:
- *     summary: Get a post by ID
- *     tags: [Posts]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID of the post to retrieve
- *     responses:
- *       200:
- *         description: Post data
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Post'
- *       401:
- *         description: Unauthorized, user needs to be signed in
- *       404:
- *         description: Post not found
- *       500:
- *         description: Unexpected error
- */
-
-router.get(
-  "/id/:id",
-  authMiddleware,
-  PostController.getById.bind(PostController)
 );
 
 /**
@@ -227,7 +226,7 @@ router.get(
  * /posts:
  *   post:
  *     summary: Create a new post
- *     tags: [Post]
+ *     tags: [Posts]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -258,7 +257,7 @@ router.post("/", authMiddleware, PostController.post.bind(PostController));
  * /posts/{id}:
  *   put:
  *     summary: Update a post by ID
- *     tags: [Post]
+ *     tags: [Posts]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -302,7 +301,7 @@ router.put(
  * /posts/{id}:
  *   delete:
  *     summary: Delete a post by ID
- *     tags: [Post]
+ *     tags: [Posts]
  *     security:
  *       - bearerAuth: []
  *     parameters:

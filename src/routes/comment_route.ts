@@ -17,23 +17,15 @@ import authMiddleware from "../common/auth_middleware";
  *      Comment:
  *        type: object
  *        properties:
- *          description:
+ *          text:
  *            type: string
- *            description: The comment description
+ *            description: The comment itself
  *          author:
  *             type: string
  *             description: The comment's author id
- *          postId:
- *            type: string
- *            description: The comment postId
- *          timestamp:
- *            type: string
- *            description: The comment upload time
  *        example:
- *          description: 'This is a great post'
- *          author: 'Shir'
+ *          text: 'This is a great post'
  *          postId: '123123'
- *          timestamp: '2025-01-02T00:00:00.000Z'
  */
 
 /**

@@ -79,18 +79,38 @@ router.get(
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               fullName:
+ *                 type: string
+ *                 example: "John Doe"
+ *               imageUrl:
+ *                 type: string
+ *                 format: uri
+ *                 example: "https://example.com/profile.jpg"
  *     responses:
  *       200:
  *         description: The user successfully updated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 fullName:
+ *                   type: string
+ *                   example: "John Doe"
+ *                 imageUrl:
+ *                   type: string
+ *                   format: uri
+ *                   example: "https://example.com/profile.jpg"
+ *                 email:
+ *                   type: string
+ *                   format: email
+ *                   example: "user@example.com"
  *       400:
  *         description: Some parameters are missing or invalid
  *       401:
- *         description: Unauthorized, user need to be signed in
+ *         description: Unauthorized, user needs to be signed in
  *       500:
  *         description: Unexpected error
  */

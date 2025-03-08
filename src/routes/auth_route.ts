@@ -144,18 +144,23 @@ router.post("/google", authController.googleSignin);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "EranShir@gmail.com"
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: "gg12345"
  *     responses:
  *       200:
- *         description: The access and refresh tokens
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Tokens'
+ *         description: Successfully logged in. Tokens are set in cookies.
  *       400:
- *         description: Some parameters are missing or invalid
+ *         description: Email or password is missing, or incorrect credentials.
  *       500:
- *         description: Unexpected server error
+ *         description: Unexpected server error.
  */
 router.post("/login", authController.login);
 
