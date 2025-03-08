@@ -12,7 +12,7 @@ class CommentController extends BaseController<IComment> {
   async post(req: AuthRequest, res: Response) {
     try {
       const userId = req.user._id;
-      const { body, postId, timestamp } = req.body;
+      const { text, postId, timestamp } = req.body;
 
       const post = await Post.findById(postId);
 
@@ -22,7 +22,7 @@ class CommentController extends BaseController<IComment> {
       }
 
       const comment = await Comment.create({
-        body,
+        text,
         author: userId,
         postId: post.id,
         timestamp: timestamp

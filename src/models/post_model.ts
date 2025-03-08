@@ -2,8 +2,8 @@ import mongoose, { ObjectId } from "mongoose";
 
 export interface IPost {
   _id?: ObjectId;
-  title: string;
-  body: string;
+  text: string;
+  image: string;
   author: ObjectId;
   timestamp: Date;
   likes: string[];
@@ -13,11 +13,11 @@ export interface IPost {
 }
 
 const postSchema = new mongoose.Schema<IPost>({
-  title: {
+  text: {
     type: String,
     required: true,
   },
-  body: {
+  image: {
     type: String,
     required: true,
   },

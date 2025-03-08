@@ -17,8 +17,7 @@ class PostController extends BaseController<IPost> {
 
       const posts = await Post.find()
         .select([
-          "title",
-          "body",
+          "text",
           "timestamp",
           "likes",
           "comments",
@@ -45,28 +44,7 @@ class PostController extends BaseController<IPost> {
     }
   }
 
-  async getById(req: AuthRequest, res: Response) {
-    try {
-      const post = await Post.findById(req.params.id)
-        .populate([{ path: "author", select: "fullName imaegUrl" }])
-        .populate({
-          path: "comments",
-          select: "body timestamp author postId",
-          populate: { path: "author", select: "fullName imageUrl" },
-        });
-
-      if (!post) {
-        res.status(404).json({ message: "Post not found" });
-      }
-
-      res.status(201).send(post);
-    } catch (error) {
-      res.status(404).json({ message: "Post not found" });
-    }
-  }
-
   async like(req: AuthRequest, res: Response) {
-    const postId = req.params.id;
     const userId = req.user._id;
 
     try {
@@ -88,7 +66,6 @@ class PostController extends BaseController<IPost> {
   }
 
   async unlike(req: AuthRequest, res: Response) {
-    const postId = req.params.id;
     const userId = req.user._id;
 
     const post = await Post.findById(req.params.id);
@@ -113,8 +90,7 @@ class PostController extends BaseController<IPost> {
     try {
       const posts = await Post.find({ author: userId })
         .select([
-          "title",
-          "body",
+          "text",
           "timestamp",
           "likes",
           "comments",
