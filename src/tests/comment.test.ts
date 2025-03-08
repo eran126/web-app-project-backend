@@ -17,8 +17,8 @@ const user: IUser = {
 };
 
 const post: IPost = {
-  title: "Test Post",
-  body: "Test Body",
+  text: "Test Body",
+  image: "Test image url",
   timestamp: new Date(),
   likes: [],
   comments: [],
@@ -26,7 +26,7 @@ const post: IPost = {
 };
 
 const comment: IComment = {
-  body: "test body",
+  text: "test body",
   author: user._id,
   postId: post._id,
   timestamp: new Date(),
@@ -64,7 +64,7 @@ describe("Post comment test", () => {
 
     expect(response.statusCode).toBe(201);
     expect(response.body.author).toBe(user._id);
-    expect(response.body.body).toBe(comment.body);
+    expect(response.body.text).toBe(comment.text);
     expect(response.body.postId).toBe(post._id.toString());
   };
 

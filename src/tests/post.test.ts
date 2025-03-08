@@ -16,8 +16,8 @@ const user: IUser = {
 };
 
 const post: IPost = {
-  title: "Test Post",
-  body: "Test Body",
+  text: "Test Body",
+  image: "http://imageurl.com",
   timestamp: new Date(),
   likes: [],
   comments: [],
@@ -48,14 +48,13 @@ afterAll(async () => {
 describe("Get posts test", () => {
   test("Get Posts", async () => {
     const response = await request(app)
-      .get("/posts/")
+      .get("/posts")
       .set("Cookie", accessTokenCookie);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toBeInstanceOf(Array);
-    expect(response.body[0]).toHaveProperty("title", post.title);
-    expect(response.body[0]).toHaveProperty("body", post.body);
-    expect(response.body[0]).toHaveProperty("likes", post.likes.length);
-    expect(response.body[0]).toHaveProperty("isLiked", false);
+    expect(response.body.posts).toBeInstanceOf(Array);
+    expect(response.body.posts[0]).toHaveProperty("text", post.text);
+    expect(response.body.posts[0]).toHaveProperty("likes", post.likes.length);
+    expect(response.body.posts[0]).toHaveProperty("isLiked", false);
   });
 
   test("Get Posts - User not authenticated", async () => {
@@ -70,8 +69,7 @@ describe("Get post by id tests", () => {
       .get(`/posts/id/${post._id}`)
       .set("Cookie", accessTokenCookie);
     expect(response.statusCode).toBe(201);
-    expect(response.body).toHaveProperty("title", post.title);
-    expect(response.body).toHaveProperty("body", post.body);
+    expect(response.body).toHaveProperty("text", post.text);
   });
 
   test("Post not found", async () => {
@@ -147,8 +145,7 @@ describe("Get posts by connected user tests", () => {
       .set("Cookie", accessTokenCookie);
     expect(response.statusCode).toBe(200);
     expect(response.body).toBeInstanceOf(Array);
-    expect(response.body[0]).toHaveProperty("title", post.title);
-    expect(response.body[0]).toHaveProperty("body", post.body);
+    expect(response.body[0]).toHaveProperty("text", post.text);
     expect(response.body[0]).toHaveProperty("likes", post.likes.length);
     expect(response.body[0]).toHaveProperty("isLiked", false);
   });
@@ -170,8 +167,7 @@ describe("Add posts tests", () => {
       .send(postWithNoId)
       .set("Cookie", accessTokenCookie);
     expect(response.statusCode).toBe(201);
-    expect(response.body).toHaveProperty("title", post.title);
-    expect(response.body).toHaveProperty("body", post.body);
+    expect(response.body).toHaveProperty("text", post.text);
     expect(response.body).toHaveProperty("likes", post.likes);
     expect(response.body).toHaveProperty("author", user._id.toString());
   };
