@@ -149,11 +149,11 @@ router.post("/google", authController.googleSignin);
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "user@example.com"
+ *                 example: "EranShir@gmail.com"
  *               password:
  *                 type: string
  *                 format: password
- *                 example: "securepassword123"
+ *                 example: "gg12345"
  *     responses:
  *       200:
  *         description: Successfully logged in. Tokens are set in cookies.

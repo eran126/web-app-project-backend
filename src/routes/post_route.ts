@@ -227,7 +227,7 @@ router.get(
  * /posts:
  *   post:
  *     summary: Create a new post
- *     tags: [Post]
+ *     tags: [Posts]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -258,7 +258,7 @@ router.post("/", authMiddleware, PostController.post.bind(PostController));
  * /posts/{id}:
  *   put:
  *     summary: Update a post by ID
- *     tags: [Post]
+ *     tags: [Posts]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -302,7 +302,7 @@ router.put(
  * /posts/{id}:
  *   delete:
  *     summary: Delete a post by ID
- *     tags: [Post]
+ *     tags: [Posts]
  *     security:
  *       - bearerAuth: []
  *     parameters:
