@@ -5,6 +5,7 @@
   "main": "app.ts",
   "scripts": {
     "dev": "nodemon ./src/server.ts",
+    "prod": "tsc -p tsconfig_prod.json && pm2 restart ecosystem.config.js --env production",
     "test": "tsc && jest --detectOpenHandles --coverage --forceExit"
   },
   "author": "Shir & Eran",
