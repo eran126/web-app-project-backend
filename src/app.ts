@@ -21,10 +21,13 @@ const initApp = (): Promise<Express> => {
     db.on("error", (error) => console.error(error));
     const dbUrl = process.env.DB_URL;
     mongoose.connect(dbUrl!).then(() => {
-        const corsOptions = {
-            origin: `http://${process.env.DOMAIN_BASE}:5173`,
-            credentials: true,
-          };
+    const corsOptions = {
+        origin:
+            process.env.NODE_ENV !== "production"
+            ? `http://${process.env.DOMAIN_BASE}:5173`
+            : `https://${process.env.DOMAIN_BASE}`,
+        credentials: true,
+        };
 
       const app = express();
       app.use(bodyParser.json());
