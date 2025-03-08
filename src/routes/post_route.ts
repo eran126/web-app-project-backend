@@ -43,7 +43,6 @@ import authMiddleware from "../common/auth_middleware";
  *            description: The post likes count
  *        example:
  *          text: 'This hamburger is very tasty'
- *          timestamp: '2025-01-02T00:00:00.000Z'
  *          image: 'http://url.com'
  */
 

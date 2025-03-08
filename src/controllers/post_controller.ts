@@ -115,11 +115,14 @@ class PostController extends BaseController<IPost> {
   async post(req: AuthRequest, res: Response) {
     const userId = req.user._id;
     req.body.author = userId;
+    req.body.timestamp = new Date().toISOString();
 
     super.post(req, res);
   }
 
   async putById(req: AuthRequest, res: Response) {
+    req.body.timestamp = new Date().toISOString();
+
     super.putById(req, res);
   }
 
