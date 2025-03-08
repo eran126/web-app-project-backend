@@ -126,6 +126,26 @@ class PostController extends BaseController<IPost> {
     super.putById(req, res);
   }
 
+  async getById(req: AuthRequest, res: Response) {
+    try {
+      const post = await Post.findById(req.params.id)
+        .populate([{ path: "author", select: "fullName imaegUrl" }])
+        .populate({
+          path: "comments",
+          select: "text timestamp author postId",
+          populate: { path: "author", select: "fullName imageUrl" },
+        });
+
+      if (!post) {
+        res.status(404).json({ message: "Post not found" });
+      }
+
+      res.status(201).send(post);
+    } catch (error) {
+      res.status(404).json({ message: "Post not found" });
+    }
+  }
+
   async deleteById(req: AuthRequest, res: Response) {
     try {
       await Comment.deleteMany({ postId: req.params.id });

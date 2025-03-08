@@ -23,17 +23,9 @@ import authMiddleware from "../common/auth_middleware";
  *          author:
  *             type: string
  *             description: The comment's author id
- *          postId:
- *            type: string
- *            description: The comment postId
- *          timestamp:
- *            type: string
- *            description: The comment upload time
  *        example:
  *          text: 'This is a great post'
- *          author: 'Shir'
  *          postId: '123123'
- *          timestamp: '2025-01-02T00:00:00.000Z'
  */
 
 /**

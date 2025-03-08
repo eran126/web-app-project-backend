@@ -85,6 +85,42 @@ import authMiddleware from "../common/auth_middleware";
 router.get("/", authMiddleware, PostController.get.bind(PostController));
 
 /**
+  * @swagger
+  * /posts/id/{id}:
+  *   get:
+  *     summary: Get a post by ID
+  *     tags: [Posts]
+  *     security:
+  *       - bearerAuth: []
+  *     parameters:
+  *       - in: path
+  *         name: id
+  *         schema:
+  *           type: string
+  *         required: true
+  *         description: ID of the post to retrieve
+  *     responses:
+  *       200:
+  *         description: Post data
+  *         content:
+  *           application/json:
+  *             schema:
+  *               $ref: '#/components/schemas/Post'
+  *       401:
+  *         description: Unauthorized, user needs to be signed in
+  *       404:
+  *         description: Post not found
+  *       500:
+  *         description: Unexpected error
+  */
+ 
+router.get(
+  "/id/:id",
+  authMiddleware,
+  PostController.getById.bind(PostController)
+);
+
+/**
  * @swagger
  * /posts/connectedUser:
  *   get:

@@ -12,7 +12,8 @@ class CommentController extends BaseController<IComment> {
   async post(req: AuthRequest, res: Response) {
     try {
       const userId = req.user._id;
-      const { text, postId, timestamp } = req.body;
+      const { text, postId } = req.body;
+      const timestamp = new Date().toISOString();
 
       const post = await Post.findById(postId);
 
