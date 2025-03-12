@@ -42,6 +42,7 @@ const initApp = (): Promise<Express> => {
       app.use("/comments", commentRoute);
       app.use("/user", userRoute);
       app.use("/ai", aiRoute);
+      app.use(express.static("front"));
 
       resolve(app);
     });
