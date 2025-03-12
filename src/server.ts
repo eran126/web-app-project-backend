@@ -15,7 +15,9 @@ initApp().then((app) => {
             description:
               "REST server of the FoodieBook application",
           },
-          servers: [{ url: "http://localhost:3000" },
+          servers: [
+            { url: `https://${process.env.DNS}`},
+            { url: "http://localhost:3000" },
             { url: "http://10.10.246.15" },
             { url: "https://10.10.246.15" }
           ],
