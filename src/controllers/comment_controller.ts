@@ -3,6 +3,7 @@ import Post from "../models/post_model";
 import { BaseController } from "./base_controller";
 import { Response } from "express";
 import { AuthRequest } from "../common/auth_middleware";
+import User from "../models/user_model";
 
 class CommentController extends BaseController<IComment> {
   constructor() {
@@ -22,9 +23,15 @@ class CommentController extends BaseController<IComment> {
         return;
       }
 
+      const author = await User.findById(userId).select([
+        "fullName",
+        "email",
+        "imageUrl",
+      ]);
+
       const comment = await Comment.create({
         text,
-        author: userId,
+        author: author,
         postId: post.id,
         timestamp: timestamp
       });
