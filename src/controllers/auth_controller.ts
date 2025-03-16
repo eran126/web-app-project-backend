@@ -89,7 +89,16 @@ const googleSignin = async (req: Request, res: Response) => {
     // Generate authentication tokens
     const tokens = await generateTokens(user);
 
-    return res.status(200).json(tokens);
+    res.cookie("refresh", tokens.refreshToken, {
+      httpOnly: true,
+      path: "/auth",
+    });
+    res.cookie("access", tokens.accessToken, {
+      httpOnly: true,
+      maxAge: accessTokenExpiration,
+    });
+
+    return res.sendStatus(200);
   } catch (error) {
     console.error("Google Sign-in Error:", error);
     return res.status(400).json({ error: "Invalid Google access token" });
