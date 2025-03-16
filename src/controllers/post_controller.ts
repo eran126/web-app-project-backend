@@ -1,5 +1,5 @@
 import Post, { IPost } from "../models/post_model";
-import User, { IUser } from "../models/user_model";
+import User from "../models/user_model";
 import Comment from "../models/comment_model";
 import { BaseController } from "./base_controller";
 import { Response } from "express";
