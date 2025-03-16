@@ -1,4 +1,5 @@
 import Post, { IPost } from "../models/post_model";
+import User, { IUser } from "../models/user_model";
 import Comment from "../models/comment_model";
 import { BaseController } from "./base_controller";
 import { Response } from "express";
@@ -18,6 +19,7 @@ class PostController extends BaseController<IPost> {
       const posts = await Post.find()
         .select([
           "text",
+          "image",
           "timestamp",
           "likes",
           "comments",
@@ -31,7 +33,7 @@ class PostController extends BaseController<IPost> {
         .map((post) => post.toObject())
         .map(({ _id, likes, ...post }) => ({
           ...post,
-          id: _id,
+          _id: _id,
           likes: likes.length,
           isLiked: likes.includes(req.user._id),
         }));
@@ -101,7 +103,7 @@ class PostController extends BaseController<IPost> {
         .map((post) => post.toObject())
         .map(({ _id, likes, ...post }) => ({
           ...post,
-          id: _id,
+          _id: _id,
           likes: likes.length,
           isLiked: likes.includes(req.user._id),
         }));
@@ -114,7 +116,11 @@ class PostController extends BaseController<IPost> {
 
   async post(req: AuthRequest, res: Response) {
     const userId = req.user._id;
-    req.body.author = userId;
+    req.body.author = await User.findById(userId).select([
+      "fullName",
+      "imageUrl",
+    ]);
+  
     req.body.timestamp = new Date().toISOString();
 
     super.post(req, res);

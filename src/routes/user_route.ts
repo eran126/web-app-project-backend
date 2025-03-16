@@ -53,7 +53,19 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 fullName:
+ *                   type: string
+ *                   example: "John Doe"
+ *                 imageUrl:
+ *                   type: string
+ *                   format: uri
+ *                   example: "https://example.com/profile.jpg"
+ *                 email:
+ *                   type: string
+ *                   format: email
+ *                   example: "user@example.com"
  *       401:
  *         description: Unauthorized, user need to be signed in
  *       500:
