@@ -24,7 +24,7 @@ class PostController extends BaseController<IPost> {
           "likes",
           "comments",
         ])
-        .populate([{ path: "author", select: "fullName imageUrl" }])
+        .populate([{ path: "author", select: "fullName email imageUrl" }])
         .sort({ timestamp: -1 })
         .skip(skip)
         .limit(limit);
@@ -118,6 +118,7 @@ class PostController extends BaseController<IPost> {
     const userId = req.user._id;
     req.body.author = await User.findById(userId).select([
       "fullName",
+      "email",
       "imageUrl",
     ]);
   
