@@ -93,11 +93,12 @@ class PostController extends BaseController<IPost> {
       const posts = await Post.find({ author: userId })
         .select([
           "text",
+          "image",
           "timestamp",
           "likes",
           "comments",
         ])
-        .populate([{ path: "author", select: "fullName imageUrl" }])
+        .populate([{ path: "author", select: "fullName email imageUrl" }])
         .sort({ timestamp: -1 });
       const detailedPosts = posts
         .map((post) => post.toObject())
