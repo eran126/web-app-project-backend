@@ -11,6 +11,8 @@ import postRoute from "./routes/post_route";
 import commentRoute from "./routes/comment_route";
 import userRoute from "./routes/user_route";
 import aiRoute from "./routes/ai_route";
+import swaggerUI from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
 
 var cors = require("cors");
 
@@ -43,6 +45,27 @@ const initApp = (): Promise<Express> => {
       app.use("/user", userRoute);
       app.use("/ai", aiRoute);
       app.use(express.static("front"));
+
+      const options = {
+        definition: {
+          openapi: "3.0.0",
+          info: {
+            title: "FoodieBook! REST API",
+            version: "1.0.0",
+            description:
+              "REST server of the FoodieBook application",
+          },
+          servers: [
+            { url: `https://${process.env.DNS}`},
+            { url: "http://localhost:3000" },
+            { url: "http://10.10.246.15" },
+            { url: "https://10.10.246.15" }
+          ],
+        },
+        apis: ["./**/*.ts"],
+      };
+      const specs = swaggerJsDoc(options);
+      app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
       // Catch-all route for handling front-end routing in a SPA
       app.get("*", (req, res) => {
