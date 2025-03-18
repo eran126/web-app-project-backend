@@ -73,6 +73,9 @@ import authMiddleware from "../common/auth_middleware";
  *                 currentPage:
  *                   type: integer
  *                   description: The current page number
+ *                 maxtPage:
+ *                   type: integer
+ *                   description: The max page number
  *                 posts:
  *                   type: array
  *                   items:
