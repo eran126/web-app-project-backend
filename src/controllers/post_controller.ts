@@ -16,6 +16,12 @@ class PostController extends BaseController<IPost> {
       const limit = 10; // Always return 10 posts per page
       const skip = (page - 1) * limit;
 
+      // Get the total number of posts
+      const totalPosts = await Post.countDocuments();
+
+      // Calculate the max page number
+      const maxPage = Math.ceil(totalPosts / limit);
+
       const posts = await Post.find()
         .select([
           "text",
@@ -40,6 +46,7 @@ class PostController extends BaseController<IPost> {
 
       res.json({
         currentPage: page,
+        maxPage: maxPage,
         posts: detailedPosts});
     } catch (err) {
       res.status(500).json({ message: err.message });
