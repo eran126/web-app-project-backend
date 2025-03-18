@@ -44,6 +44,11 @@ const initApp = (): Promise<Express> => {
       app.use("/ai", aiRoute);
       app.use(express.static("front"));
 
+      // Catch-all route for handling front-end routing in a SPA
+      app.get("*", (req, res) => {
+        res.sendFile("index.html", { root: "front" });
+      });
+
       resolve(app);
     });
   });
