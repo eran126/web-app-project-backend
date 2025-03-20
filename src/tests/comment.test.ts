@@ -63,7 +63,7 @@ describe("Post comment test", () => {
       .send(comment);
 
     expect(response.statusCode).toBe(201);
-    expect(response.body.author).toBe(user._id);
+    expect(response.body.author._id).toBe(user._id);
     expect(response.body.text).toBe(comment.text);
     expect(response.body.postId).toBe(post._id.toString());
   };
