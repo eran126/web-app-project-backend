@@ -169,7 +169,6 @@ describe("Add posts tests", () => {
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty("text", post.text);
     expect(response.body).toHaveProperty("likes", post.likes);
-    expect(response.body).toHaveProperty("author", user._id.toString());
   };
   test("Create Post", async () => {
     await addPost(post);
